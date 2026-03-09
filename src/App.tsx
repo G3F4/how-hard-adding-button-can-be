@@ -276,7 +276,7 @@ const slides = [
         nav: "module", moduleId: 2,
         render: () => (
             <div className="flex flex-col items-center justify-center h-full text-center px-8">
-                <p className="text-violet-500 text-sm uppercase tracking-widest mb-4">Module 2 — ~17 minutes</p>
+                <p className="text-violet-500 text-sm uppercase tracking-widest mb-4">Module 2 — ~10 minutes</p>
                 <h2 className="text-4xl font-bold text-white mb-4">"Download Report"</h2>
                 <p className="text-xl text-slate-400">A new process in an existing system.<br/>Layer by layer — from click to database.</p>
             </div>
@@ -317,11 +317,11 @@ const slides = [
                                 <div>
                                     <p className={`${l.color} font-bold text-lg`}>{l.name}</p>
                                     <p className="text-slate-400 text-sm">
-                                        {i === 0 && "What does the user see? What states? How long to wait?"}
-                                        {i === 1 && "Where do params come from? How to manage operation state?"}
-                                        {i === 2 && "What API contract? Sync or async?"}
-                                        {i === 3 && "Who generates the PDF? Queue? Worker?"}
-                                        {i === 4 && "What data range? How not to kill the database?"}
+                                        {i === 0 && "What does the user see? What button states? How long to wait?"}
+                                        {i === 1 && "Where do parameters come from? How to track loading and errors?"}
+                                        {i === 2 && "What URL does the frontend call? Does the response come immediately?"}
+                                        {i === 3 && "How to generate the PDF? What if it takes a long time?"}
+                                        {i === 4 && "How much data? Will it slow down the app for everyone?"}
                                     </p>
                                 </div>
                             </div>
@@ -343,10 +343,10 @@ const slides = [
                 <div className="bg-slate-800 border border-slate-700 rounded-2xl p-8 max-w-3xl">
                     <div className="space-y-4">
                         {[
-                            { q: "Where does the button live?", d: "Header? Toolbar? Context menu? Each location = different layout constraints and component responsibility." },
-                            { q: "What states does it need?", d: "Idle → Hover → Loading → Success → Error → Disabled. At least 6 visual variants." },
-                            { q: "What if generation takes 45 seconds?", d: "Spinner? Progress bar? Modal with 'we'll email you'? This is a fundamental UX decision." },
-                            { q: "What if the user clicks 3 times?", d: "Debounce? Disable? Queue? A UX decision with consequences on every layer below." },
+                            { q: "Where does the button go?", d: "In the header? In a toolbar? In a sidebar? The location affects how the component is built." },
+                            { q: "What states does the button need?", d: "Idle → Loading → Success → Error. Each state looks different — and the user needs to understand what's happening." },
+                            { q: "What if it takes a long time?", d: "Show a spinner? A progress bar? Tell the user 'we'll email you'? This is a UX decision with technical consequences." },
+                            { q: "What if the user clicks multiple times?", d: "Disable the button? Ignore extra clicks? Each choice affects the code below." },
                         ].map((item, i) => (
                             <div key={i} className="border-l-2 border-indigo-600 pl-4">
                                 <p className="text-white font-semibold">{item.q}</p>
@@ -354,32 +354,6 @@ const slides = [
                             </div>
                         ))}
                     </div>
-                </div>
-            </div>
-        ),
-    },
-    // M2 - Layer 1: States
-    {
-        nav: "layer", layer: 0,
-        render: () => (
-            <div className="flex flex-col justify-center h-full px-16">
-                <p className="text-indigo-500 text-sm uppercase tracking-widest mb-2">Layer 1 — UI / UX</p>
-                <h2 className="text-3xl font-bold text-white mb-8">One button, six faces</h2>
-                <div className="grid grid-cols-3 gap-4 max-w-3xl">
-                    {[
-                        { state: "Idle", btn: "bg-indigo-600 text-white", label: "📥 Download report", note: "Default state. Clear CTA." },
-                        { state: "Hover", btn: "bg-indigo-500 text-white ring-2 ring-indigo-400", label: "📥 Download report", note: "Feedback: I'm clickable." },
-                        { state: "Loading", btn: "bg-indigo-800 text-indigo-300 cursor-wait", label: "⏳ Generating...", note: "Disable + progress info." },
-                        { state: "Success", btn: "bg-green-600 text-white", label: "✅ Done!", note: "Confirmation + auto-download?" },
-                        { state: "Error", btn: "bg-red-600 text-white", label: "❌ Try again", note: "Retry CTA. What message?" },
-                        { state: "Disabled", btn: "bg-slate-700 text-slate-500 cursor-not-allowed", label: "📥 Download report", note: "No permissions? No data?" },
-                    ].map((item, i) => (
-                        <div key={i} className="bg-slate-800 border border-slate-700 rounded-xl p-4 flex flex-col items-center">
-                            <p className="text-slate-500 text-xs uppercase tracking-wider mb-3">{item.state}</p>
-                            <div className={`${item.btn} px-4 py-2 rounded-lg text-sm font-medium mb-3 text-center whitespace-nowrap`}>{item.label}</div>
-                            <p className="text-slate-500 text-xs text-center">{item.note}</p>
-                        </div>
-                    ))}
                 </div>
             </div>
         ),
@@ -395,60 +369,14 @@ const slides = [
                 <div className="bg-slate-800 border border-slate-700 rounded-2xl p-8 max-w-3xl">
                     <div className="space-y-4">
                         {[
-                            { q: "Where do report parameters come from?", d: "Filters, dates, columns — it's app state. Props drilling? Context? Store? URL params? What if they're out of sync?" },
-                            { q: "How to manage operation state?", d: "useState? Global store? React Query mutation? What if the user navigates away mid-operation?" },
-                            { q: "Client-side validation?", d: "Sensible date range? Non-empty dataset? Better to check now than burden the server." },
-                            { q: "Response handling?", d: "Sync: Blob → download. Async: jobId → polling → downloadUrl. Fundamentally different code flows." },
+                            { q: "Where do report parameters come from?", d: "Filters, date range, selected columns — the app needs to gather all this before sending the request." },
+                            { q: "How to track what's happening?", d: "The button was clicked — now we need to show loading, handle success, handle errors. That's state management." },
+                            { q: "Should we validate before sending?", d: "Check if the date range makes sense, if there's data to export. Better to catch problems early." },
+                            { q: "How to handle the response?", d: "The server sends back a file. How do we trigger the download? What if it fails?" },
                         ].map((item, i) => (
                             <div key={i} className="border-l-2 border-blue-600 pl-4">
                                 <p className="text-white font-semibold">{item.q}</p>
                                 <p className="text-slate-500 text-sm mt-1">{item.d}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        ),
-    },
-    // M2 - Layer 2: Code flow
-    {
-        nav: "layer", layer: 1,
-        render: () => (
-            <div className="flex flex-col justify-center h-full px-16">
-                <p className="text-blue-500 text-sm uppercase tracking-widest mb-2">Layer 2 — Client Application</p>
-                <h2 className="text-3xl font-bold text-white mb-6">Code flow</h2>
-                <div className="flex gap-6 max-w-4xl">
-                    <div className="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-5 font-mono text-sm leading-relaxed">
-                        <p className="text-slate-500 mb-3">{"// Looks simple..."}</p>
-                        <p className="text-blue-400">const handleExport = async () =&gt; {"{"}</p>
-                        <p className="text-slate-400 ml-4">setLoading(true)</p>
-                        <p className="text-slate-500 ml-4">{"// 1. Gather parameters"}</p>
-                        <p className="text-slate-400 ml-4">const params = getFilters()</p>
-                        <p className="text-slate-500 ml-4">{"// 2. Validate"}</p>
-                        <p className="text-slate-400 ml-4">if (!validate(params)) return</p>
-                        <p className="text-slate-500 ml-4">{"// 3. Send request"}</p>
-                        <p className="text-slate-400 ml-4">const job = await api.startExport(params)</p>
-                        <p className="text-slate-500 ml-4">{"// 4. Poll status"}</p>
-                        <p className="text-slate-400 ml-4">await pollUntilDone(job.id)</p>
-                        <p className="text-slate-500 ml-4">{"// 5. Download file"}</p>
-                        <p className="text-slate-400 ml-4">await downloadFile(job.url)</p>
-                        <p className="text-blue-400">{"}"}</p>
-                    </div>
-                    <div className="flex-1 space-y-3">
-                        <p className="text-slate-400 font-semibold mb-2">But each step is a decision:</p>
-                        {[
-                            { n: "1", t: "Parameters", d: "From URL, store, or props? What if they're desynchronized?" },
-                            { n: "2", t: "Validation", d: "Toast? Inline error? Preemptively disable?" },
-                            { n: "3", t: "Request", d: "Who defines the contract — front or back?" },
-                            { n: "4", t: "Polling", d: "Interval? Max time? What after timeout?" },
-                            { n: "5", t: "Download", d: "Blob? Presigned URL? What about mobile?" },
-                        ].map((item, i) => (
-                            <div key={i} className="bg-blue-950 border border-blue-900 rounded-lg p-3 flex items-start gap-3">
-                                <span className="text-blue-500 font-mono font-bold">{item.n}</span>
-                                <div>
-                                    <p className="text-blue-300 font-semibold text-sm">{item.t}</p>
-                                    <p className="text-slate-500 text-xs">{item.d}</p>
-                                </div>
                             </div>
                         ))}
                     </div>
@@ -467,11 +395,10 @@ const slides = [
                 <div className="bg-slate-800 border border-slate-700 rounded-2xl p-8 max-w-3xl">
                     <div className="space-y-4">
                         {[
-                            { q: "What endpoint to expose?", d: "POST /reports? /exports? How does naming fit the rest of the API? Versioning?" },
-                            { q: "Sync or async contract?", d: "200 + body? 202 Accepted + jobId? This is the key decision — affects both front and back." },
-                            { q: "Parameter mapping", d: "BFF translates 'UI filters' into 'domain parameters'. This mapping is rarely 1:1." },
-                            { q: "Auth & rate limiting", d: "Who can generate reports? How many per minute? BFF is the natural place for this." },
-                            { q: "Response aggregation", d: "Status + metadata + downloadUrl might come from 3 different services. BFF glues them together." },
+                            { q: "What URL does the frontend call?", d: "POST /api/reports? /api/exports? Naming matters — it's part of the contract between frontend and backend." },
+                            { q: "Does the response come immediately or later?", d: "Small report = instant response. Large report = 'accepted, check back later'. This one decision changes the whole flow." },
+                            { q: "Who's allowed to generate reports?", d: "Authentication (who are you?) and authorization (can you do this?). The server must check both." },
+                            { q: "How to translate UI filters to a database query?", d: "The UI says 'last 30 days, only active users'. The server needs to convert that into actual query parameters." },
                         ].map((item, i) => (
                             <div key={i} className="border-l-2 border-violet-600 pl-4">
                                 <p className="text-white font-semibold">{item.q}</p>
@@ -480,49 +407,6 @@ const slides = [
                         ))}
                     </div>
                 </div>
-            </div>
-        ),
-    },
-    // M2 - Layer 3: Two paths
-    {
-        nav: "layer", layer: 2,
-        render: () => (
-            <div className="flex flex-col justify-center h-full px-16">
-                <p className="text-violet-500 text-sm uppercase tracking-widest mb-2">Layer 3 — BFF</p>
-                <h2 className="text-3xl font-bold text-white mb-6">API Contract — two roads</h2>
-                <div className="flex gap-6 max-w-4xl">
-                    <div className="flex-1 bg-slate-900 border border-green-800 rounded-xl p-5">
-                        <p className="text-green-400 font-bold text-lg mb-3">Synchronous</p>
-                        <div className="font-mono text-sm space-y-1 text-slate-400">
-                            <p className="text-green-400">POST /api/reports</p>
-                            <p>{"{ filters, format: 'pdf' }"}</p>
-                            <p className="text-slate-600 mt-2">↓ wait 5-60s...</p>
-                            <p className="text-green-400 mt-2">200 OK</p>
-                            <p>Content-Type: application/pdf</p>
-                        </div>
-                        <div className="mt-4 space-y-1 text-sm">
-                            <p className="text-green-400">✅ Simple flow</p>
-                            <p className="text-red-400">❌ Timeout on large datasets</p>
-                            <p className="text-red-400">❌ Blocks the connection</p>
-                        </div>
-                    </div>
-                    <div className="flex-1 bg-slate-900 border border-violet-800 rounded-xl p-5">
-                        <p className="text-violet-400 font-bold text-lg mb-3">Asynchronous</p>
-                        <div className="font-mono text-sm space-y-1 text-slate-400">
-                            <p className="text-violet-400">POST /api/reports</p>
-                            <p>{"→ 202 { jobId: 'abc-123' }"}</p>
-                            <p className="text-slate-600 mt-2">↓ poll every 2s</p>
-                            <p className="text-violet-400">GET /api/reports/abc-123</p>
-                            <p>{"{ status, progress, downloadUrl }"}</p>
-                        </div>
-                        <div className="mt-4 space-y-1 text-sm">
-                            <p className="text-green-400">✅ Scalable, retry-friendly</p>
-                            <p className="text-green-400">✅ Progress tracking</p>
-                            <p className="text-red-400">❌ Complex flow + infrastructure</p>
-                        </div>
-                    </div>
-                </div>
-                <p className="text-slate-500 text-sm mt-5">This decision changes <span className="text-white">every layer</span> above and below. This is the point where a button becomes a project.</p>
             </div>
         ),
     },
@@ -537,11 +421,11 @@ const slides = [
                 <div className="bg-slate-800 border border-slate-700 rounded-2xl p-8 max-w-3xl">
                     <div className="space-y-4">
                         {[
-                            { q: "New service or extension?", d: "Is reporting a separate domain? Add to existing service? Coupling vs. complexity." },
-                            { q: "How to generate the PDF?", d: "Puppeteer (HTML→PDF)? PDFKit? Gotenberg? Each has different trade-offs." },
-                            { q: "Sync processing or queue?", d: "Worker? BullMQ? Lambda? With 50k rows it takes seconds or minutes." },
-                            { q: "Where to store the file?", d: "S3 + presigned URL? TTL? How long to keep generated reports?" },
-                            { q: "Idempotency?", d: "2 clicks = 2 reports? Or do we check for duplicates?" },
+                            { q: "Where does the report get generated?", d: "Is it part of an existing service or a new one? Adding to an existing service is faster but creates coupling." },
+                            { q: "How to create the PDF?", d: "Render HTML and convert to PDF? Use a PDF library? Each approach has different trade-offs in quality and complexity." },
+                            { q: "What if it takes a long time?", d: "With lots of data, generation can take seconds or minutes. Should it run in the background?" },
+                            { q: "Where to store the generated file?", d: "On disk? In cloud storage? How long do we keep it? The user might want to download it again later." },
+                            { q: "What about duplicate requests?", d: "User clicks twice — do we generate two reports? Or detect the duplicate and return the same file?" },
                         ].map((item, i) => (
                             <div key={i} className="border-l-2 border-purple-600 pl-4">
                                 <p className="text-white font-semibold">{item.q}</p>
@@ -550,38 +434,6 @@ const slides = [
                         ))}
                     </div>
                 </div>
-            </div>
-        ),
-    },
-    // M2 - Layer 4: Pipeline
-    {
-        nav: "layer", layer: 3,
-        render: () => (
-            <div className="flex flex-col justify-center h-full px-16">
-                <p className="text-purple-500 text-sm uppercase tracking-widest mb-2">Layer 4 — Domain Service</p>
-                <h2 className="text-3xl font-bold text-white mb-6">Generation pipeline</h2>
-                <div className="flex flex-col gap-1.5 max-w-2xl mx-auto">
-                    {[
-                        { s: "1. Accept the job", d: "Job → DB, status: PENDING", icon: "📩" },
-                        { s: "2. Place in queue", d: "RabbitMQ / SQS / Redis", icon: "📬" },
-                        { s: "3. Worker picks it up", d: "Separate process / Lambda", icon: "👷" },
-                        { s: "4. Fetch data", d: "Query → pagination / streaming", icon: "🗄️" },
-                        { s: "5. Transform", d: "Formatting, aggregations", icon: "🔄" },
-                        { s: "6. Render PDF", d: "Template → HTML → PDF", icon: "📄" },
-                        { s: "7. Upload", d: "S3 + presigned URL", icon: "☁️" },
-                        { s: "8. Status: DONE", d: "downloadUrl ready", icon: "✅" },
-                    ].map((item, i) => (
-                        <div key={i}>
-                            <div className="bg-purple-950 border border-purple-900 rounded-lg px-5 py-2.5 flex items-center gap-4">
-                                <span className="text-lg">{item.icon}</span>
-                                <p className="text-white font-semibold text-sm">{item.s}</p>
-                                <p className="text-slate-500 text-xs ml-auto">{item.d}</p>
-                            </div>
-                            {i < 7 && <div className="flex justify-center"><div className="w-0.5 h-1.5 bg-slate-800" /></div>}
-                        </div>
-                    ))}
-                </div>
-                <p className="text-slate-600 text-sm text-center mt-4">8 steps. Each can fail. Each needs error handling.</p>
             </div>
         ),
     },
@@ -596,11 +448,10 @@ const slides = [
                 <div className="bg-slate-800 border border-slate-700 rounded-2xl p-8 max-w-3xl">
                     <div className="space-y-4">
                         {[
-                            { q: "What data range?", d: "One day? One year? 100 rows vs 10M — completely different strategies." },
-                            { q: "Read replica or primary?", d: "Heavy report on the production database = degradation for everyone." },
-                            { q: "Pagination / cursor / streaming?", d: "SELECT * with 5M rows = OOM. Cursor-based iteration? COPY TO?" },
-                            { q: "Denormalization?", d: "Joining 8 tables? Materialized view? Pre-aggregated data?" },
-                            { q: "New indexes?", d: "Report filters on unindexed columns. But adding indexes = write performance impact." },
+                            { q: "What data does the report need?", d: "One table or five? Simple query or complex joins? The report's requirements define the query complexity." },
+                            { q: "How much data are we talking about?", d: "100 rows = instant. 100,000 rows = a few seconds. 5 million rows = minutes. Scale changes everything." },
+                            { q: "Will this slow down the app for everyone?", d: "A heavy report query running on the main database can make the whole app slower for all users." },
+                            { q: "Do we need new indexes?", d: "The report filters on columns that aren't indexed yet. Adding an index speeds up reads but can slow down writes." },
                         ].map((item, i) => (
                             <div key={i} className="border-l-2 border-fuchsia-600 pl-4">
                                 <p className="text-white font-semibold">{item.q}</p>
@@ -608,37 +459,6 @@ const slides = [
                             </div>
                         ))}
                     </div>
-                </div>
-            </div>
-        ),
-    },
-    // M2 - Scale
-    {
-        nav: "layer", layer: 4,
-        render: () => (
-            <div className="flex flex-col justify-center h-full px-16">
-                <p className="text-fuchsia-500 text-sm uppercase tracking-widest mb-2">Layer 5 — Database</p>
-                <h2 className="text-3xl font-bold text-white mb-6">Scale changes everything</h2>
-                <div className="grid grid-cols-3 gap-5 max-w-4xl">
-                    {[
-                        { icon: "📊", rows: "100 rows", time: "~50ms", strategy: "SELECT + JOIN", approach: "Frontend-only OK", impact: "No DB changes", c: "bg-green-950 border-green-800", tc: "text-green-400" },
-                        { icon: "📈", rows: "100k rows", time: "~2-5s", strategy: "Indexes + pagination", approach: "Backend sync OK", impact: "New indexes, read replica", c: "bg-amber-950 border-amber-800", tc: "text-amber-400" },
-                        { icon: "🔥", rows: "5M+ rows", time: "minutes", strategy: "Streaming + mat. views", approach: "Async pipeline required", impact: "New DB infrastructure", c: "bg-red-950 border-red-800", tc: "text-red-400" },
-                    ].map((item, i) => (
-                        <div key={i} className={`${item.c} border rounded-xl p-5 text-center`}>
-                            <p className="text-3xl mb-2">{item.icon}</p>
-                            <p className={`${item.tc} font-bold text-lg`}>{item.rows}</p>
-                            <p className="text-slate-400 text-sm mt-2">{item.strategy}</p>
-                            <p className="text-slate-400 text-sm">{item.time}</p>
-                            <p className="text-slate-400 text-sm">{item.approach}</p>
-                            <p className="text-slate-600 text-xs mt-3">{item.impact}</p>
-                        </div>
-                    ))}
-                </div>
-                <div className="mt-6 bg-slate-800 border border-slate-700 rounded-xl p-5 max-w-4xl">
-                    <p className="text-slate-300 text-sm">
-                        <span className="text-white font-semibold">Key insight:</span> Decisions at the DB layer propagate upward. Query takes minutes → <span className="text-purple-400">service must be async</span> → <span className="text-violet-400">BFF returns 202</span> → <span className="text-blue-400">frontend polls</span> → <span className="text-indigo-400">UX must handle the wait</span>.
-                    </p>
                 </div>
             </div>
         ),
@@ -652,10 +472,10 @@ const slides = [
                 <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 max-w-3xl mx-auto">
                     {[
                         { l: "🎨 UI/UX", a: "User clicks 'Download report'", c: "text-indigo-400", down: true },
-                        { l: "⚛️ Client", a: "Validate → gather filters → POST /api/reports", c: "text-blue-400", down: true },
-                        { l: "🔀 BFF", a: "Auth → map params → call service → 202", c: "text-violet-400", down: true },
-                        { l: "⚙️ Service", a: "Job → queue → worker → PDF → S3", c: "text-purple-400", down: true },
-                        { l: "🗄️ DB", a: "Read replica → cursor query → stream rows", c: "text-fuchsia-400", down: false },
+                        { l: "⚛️ Client", a: "Gather filters → validate → send request to server", c: "text-blue-400", down: true },
+                        { l: "🔀 BFF", a: "Check permissions → translate filters → call service", c: "text-violet-400", down: true },
+                        { l: "⚙️ Service", a: "Fetch data → generate PDF → store file", c: "text-purple-400", down: true },
+                        { l: "🗄️ DB", a: "Run query → return rows for the report", c: "text-fuchsia-400", down: false },
                     ].map((item, i) => (
                         <div key={`d${i}`}>
                             <div className="flex items-center gap-4 py-1.5">
@@ -667,10 +487,10 @@ const slides = [
                     ))}
                     <div className="border-t border-dashed border-slate-700 my-3" />
                     {[
-                        { l: "⚙️ Service", a: "Job DONE → presigned URL", c: "text-purple-400", up: true },
-                        { l: "🔀 BFF", a: "GET /reports/:id → done + url", c: "text-violet-400", up: true },
-                        { l: "⚛️ Client", a: "Poll → DONE → trigger download", c: "text-blue-400", up: true },
-                        { l: "🎨 UI/UX", a: "Success → file downloaded → toast", c: "text-indigo-400", up: false },
+                        { l: "⚙️ Service", a: "PDF ready → file URL available", c: "text-purple-400", up: true },
+                        { l: "🔀 BFF", a: "Return download link to the client", c: "text-violet-400", up: true },
+                        { l: "⚛️ Client", a: "Receive response → trigger file download", c: "text-blue-400", up: true },
+                        { l: "🎨 UI/UX", a: "Show success → file downloaded", c: "text-indigo-400", up: false },
                     ].map((item, i) => (
                         <div key={`u${i}`}>
                             <div className="flex items-center gap-4 py-1.5">
@@ -694,11 +514,11 @@ const slides = [
                 <p className="text-slate-400 mb-5">Each layer fails in its own way:</p>
                 <div className="space-y-2.5 max-w-3xl">
                     {[
-                        { layer: "🎨 UI", err: "User closed the tab mid-generation", q: "Does the job cancel? Does the report still generate? How to handle returning?" },
-                        { layer: "⚛️ Client", err: "Polling enters infinite loop", q: "Max attempts? Exponential backoff? Timeout → error or 'check back later'?" },
-                        { layer: "🔀 BFF", err: "Domain service not responding", q: "Circuit breaker? Fallback? 503 vs 504? Retry-After header?" },
-                        { layer: "⚙️ Service", err: "Worker crashes mid-generation", q: "Dead letter queue? Auto-retry? How to mark as failed? Alert on-call?" },
-                        { layer: "🗄️ DB", err: "Query runs 5 min, blocks others", q: "Statement timeout? Query killer? Signal that we need a materialized view?" },
+                        { layer: "🎨 UI", err: "User closes the browser mid-generation", q: "Does the report still generate? Can they come back and download it later?" },
+                        { layer: "⚛️ Client", err: "Network connection drops", q: "Show an error message? Retry automatically? Let the user try again manually?" },
+                        { layer: "🔀 BFF", err: "Backend service is not responding", q: "Show a friendly error? Suggest trying again later? How long to wait before giving up?" },
+                        { layer: "⚙️ Service", err: "Report generation crashes halfway through", q: "Try again automatically? Notify someone? Mark the job as failed?" },
+                        { layer: "🗄️ DB", err: "Query takes too long and times out", q: "Set a time limit? Break into smaller queries? Use pre-computed data?" },
                     ].map((item, i) => (
                         <div key={i} className="bg-red-950 border border-red-900 rounded-xl p-3.5 flex items-start gap-3">
                             <span className="text-base flex-shrink-0">{item.layer}</span>
