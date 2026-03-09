@@ -59,60 +59,174 @@ const slides = [
             <div className="flex flex-col items-center justify-center h-full text-center px-8">
                 <p className="text-cyan-500 text-sm uppercase tracking-widest mb-4">Module 1 — ~7 minutes</p>
                 <h2 className="text-4xl font-bold text-white mb-4">"It's just a button"</h2>
-                <p className="text-xl text-slate-400">Non-obvious problems lurking behind<br/>adding an ordinary button to a page.</p>
+                <p className="text-xl text-slate-400">Five problems hiding behind a simple button.<br/>Each one is a different web specialization.</p>
             </div>
         ),
     },
-    // M1 - Focus trap
+    // M1 #1 — <button> vs <div> (HTML / Web Standards)
     {
         nav: "module", moduleId: 1,
         render: () => (
             <div className="flex flex-col justify-center h-full px-16">
                 <p className="text-cyan-600 text-sm uppercase tracking-widest mb-2">Problem #1</p>
-                <h2 className="text-3xl font-bold text-white mb-3">Focus management & accessibility</h2>
-                <p className="text-slate-400 mb-8">You add a button. But do you know what happens when the user presses Tab?</p>
-                <div className="flex gap-6 max-w-4xl">
-                    <div className="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-6">
-                        <p className="text-red-400 font-bold mb-3">❌ Typical scenario</p>
-                        <div className="space-y-3 text-slate-300 text-sm">
-                            <p>Button opens a dropdown or modal.</p>
-                            <p>Focus stays on the button or escapes to body.</p>
-                            <p>Screen reader has no idea something opened.</p>
-                            <p>Escape does nothing.</p>
-                            <p>Tab travels behind the modal — <span className="text-red-400">no focus trap</span>.</p>
+                <h2 className="text-3xl font-bold text-white mb-3">{"<button>"} vs {"<div>"} — semantics matter</h2>
+                <p className="text-slate-400 mb-8">"They look the same. They behave completely differently."</p>
+                <div className="bg-slate-800 border border-slate-700 rounded-2xl p-8 max-w-3xl">
+                    <div className="grid grid-cols-2 gap-6">
+                        <div>
+                            <p className="text-green-400 font-bold mb-3">{"<button>"}</p>
+                            <div className="space-y-2 text-sm text-slate-300">
+                                <p>✅ Focusable by default — no tabindex needed</p>
+                                <p>✅ Enter and Space activate it — built into the browser</p>
+                                <p>✅ Screen reader announces "button" — implicit role</p>
+                                <p>✅ Supports <span className="font-mono text-xs bg-slate-700 px-1 rounded">disabled</span> natively — grays out, skips in Tab order</p>
+                                <p>✅ Participates in form submission — type="submit" by default</p>
+                                <p>✅ cursor: pointer is the default — no extra CSS</p>
+                            </div>
+                        </div>
+                        <div>
+                            <p className="text-red-400 font-bold mb-3">{"<div onclick=\"...\">"}</p>
+                            <div className="space-y-2 text-sm text-slate-300">
+                                <p>❌ Not focusable — must add tabindex="0"</p>
+                                <p>❌ Keyboard doesn't work — must add onkeydown for Enter + Space</p>
+                                <p>❌ Screen reader says nothing useful — must add role="button"</p>
+                                <p>❌ No disabled state — must use aria-disabled + prevent clicks manually</p>
+                                <p>❌ No form integration — must handle submission with JavaScript</p>
+                                <p>❌ cursor: pointer missing — must add it in CSS</p>
+                            </div>
                         </div>
                     </div>
-                    <div className="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-6">
-                        <p className="text-green-400 font-bold mb-3">✅ What a11y requires</p>
-                        <div className="space-y-3 text-slate-300 text-sm">
-                            <p><span className="text-white font-mono text-xs bg-slate-700 px-1.5 py-0.5 rounded">role</span>, <span className="text-white font-mono text-xs bg-slate-700 px-1.5 py-0.5 rounded">aria-expanded</span>, <span className="text-white font-mono text-xs bg-slate-700 px-1.5 py-0.5 rounded">aria-haspopup</span></p>
-                            <p>Focus trap inside the modal/dropdown</p>
-                            <p>Escape closes and returns focus to trigger</p>
-                            <p>Correct focus order in DOM</p>
-                            <p><span className="text-green-400">Roving tabindex</span> if it's a toolbar</p>
-                        </div>
+                    <div className="mt-6 border-t border-slate-700 pt-4">
+                        <p className="text-slate-400 text-sm">Recreating native {"<button>"} behavior with {"<div>"} takes ~15 lines of extra code. And most projects skip half of them. This is <span className="text-cyan-400">HTML standards knowledge</span> — a specialization in itself.</p>
                     </div>
                 </div>
-                <p className="text-slate-500 text-sm mt-6 max-w-4xl">A single button that opens anything is a whole focus management subsystem. WCAG 2.1 AA is not "nice to have" — it's a legal requirement in the EU.</p>
             </div>
         ),
     },
-    // M1 - Layout shift
+    // M1 #2 — Stacking context (CSS / Visual Rendering Model)
     {
         nav: "module", moduleId: 1,
         render: () => (
             <div className="flex flex-col justify-center h-full px-16">
                 <p className="text-cyan-600 text-sm uppercase tracking-widest mb-2">Problem #2</p>
+                <h2 className="text-3xl font-bold text-white mb-3">Stacking context — why z-index: 99999 doesn't work</h2>
+                <p className="text-slate-400 mb-8">"Your button is there. But something invisible is covering it."</p>
+                <div className="flex gap-6 max-w-4xl">
+                    <div className="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-6">
+                        <p className="text-red-400 font-bold mb-3">❌ The trap</p>
+                        <div className="space-y-3 text-sm text-slate-300">
+                            <p>Header button has <span className="font-mono text-xs bg-slate-700 px-1 rounded">z-index: 100</span>.</p>
+                            <p>You add a dropdown below it with <span className="font-mono text-xs bg-slate-700 px-1 rounded">z-index: 1000</span>.</p>
+                            <p>But the header's parent has <span className="font-mono text-xs bg-slate-700 px-1 rounded">transform: translateY(0)</span>.</p>
+                            <p>That one CSS property creates a <span className="text-white font-semibold">new stacking context</span>.</p>
+                            <p>Now z-index: 1000 only competes <span className="text-red-400">inside that context</span>.</p>
+                            <p>Your dropdown is trapped — invisible behind the overlay.</p>
+                        </div>
+                    </div>
+                    <div className="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-6">
+                        <p className="text-orange-400 font-bold mb-3">Properties that create new stacking context</p>
+                        <div className="space-y-2 text-sm text-slate-300">
+                            <p><span className="font-mono text-xs bg-slate-700 px-1.5 rounded">transform</span> — even translateZ(0)</p>
+                            <p><span className="font-mono text-xs bg-slate-700 px-1.5 rounded">opacity</span> — less than 1</p>
+                            <p><span className="font-mono text-xs bg-slate-700 px-1.5 rounded">filter</span> — blur, brightness...</p>
+                            <p><span className="font-mono text-xs bg-slate-700 px-1.5 rounded">will-change</span></p>
+                            <p><span className="font-mono text-xs bg-slate-700 px-1.5 rounded">position: fixed / sticky</span></p>
+                            <p><span className="font-mono text-xs bg-slate-700 px-1.5 rounded">contain: paint</span></p>
+                        </div>
+                    </div>
+                </div>
+                <p className="text-slate-500 text-sm mt-6 max-w-4xl">z-index is not a global ranking. It's local to a stacking context. Understanding this requires deep <span className="text-cyan-400">CSS rendering knowledge</span> — many senior developers still get this wrong.</p>
+            </div>
+        ),
+    },
+    // M1 #3 — Event propagation (JavaScript / DOM API)
+    {
+        nav: "module", moduleId: 1,
+        render: () => (
+            <div className="flex flex-col justify-center h-full px-16">
+                <p className="text-cyan-600 text-sm uppercase tracking-widest mb-2">Problem #3</p>
+                <h2 className="text-3xl font-bold text-white mb-3">Event propagation — the click that fires twice</h2>
+                <p className="text-slate-400 mb-8">"You click 'Delete'. The row also opens. Why?"</p>
+                <div className="flex gap-6 max-w-4xl">
+                    <div className="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-6">
+                        <p className="text-purple-400 font-bold mb-3">The Bubbling Trap</p>
+                        <div className="space-y-3 text-sm text-slate-300">
+                            <p>"Delete" button sits inside a clickable table row.</p>
+                            <p>User clicks "Delete".</p>
+                            <p>The click event fires on the button → then <span className="text-white font-semibold">bubbles up</span> to the row.</p>
+                            <p>Both handlers execute. Row opens <span className="text-white">AND</span> item gets deleted.</p>
+                            <p><span className="font-mono text-xs bg-slate-700 px-1 rounded">stopPropagation()</span>? Fixes this, but breaks event listeners higher up.</p>
+                            <p><span className="font-mono text-xs bg-slate-700 px-1 rounded">addEventListener</span> on document? Now it never receives the event.</p>
+                        </div>
+                    </div>
+                    <div className="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-6">
+                        <p className="text-orange-400 font-bold mb-3">Nesting violations</p>
+                        <div className="space-y-3 text-sm text-slate-300">
+                            <p><span className="font-mono text-xs bg-red-900 px-1.5 rounded">{"<a><button>Click</button></a>"}</span> — invalid HTML.</p>
+                            <p><span className="font-mono text-xs bg-red-900 px-1.5 rounded">{"<button><button>Inner</button></button>"}</span> — invalid HTML.</p>
+                            <p>Browsers "fix" these differently — Chrome, Firefox, Safari disagree.</p>
+                            <p>The click target might be the inner or outer element — unpredictable.</p>
+                            <p>Forms with multiple submit buttons — which one "wins"?</p>
+                        </div>
+                    </div>
+                </div>
+                <p className="text-slate-500 text-sm mt-6 max-w-4xl">The DOM event system has three phases: capture → target → bubble. Most developers only know about bubble. Understanding the full model is deep <span className="text-cyan-400">JavaScript / DOM knowledge</span>.</p>
+            </div>
+        ),
+    },
+    // M1 #4 — Focus trap & keyboard (Accessibility / WCAG)
+    {
+        nav: "module", moduleId: 1,
+        render: () => (
+            <div className="flex flex-col justify-center h-full px-16">
+                <p className="text-cyan-600 text-sm uppercase tracking-widest mb-2">Problem #4</p>
+                <h2 className="text-3xl font-bold text-white mb-3">Focus trap & keyboard navigation</h2>
+                <p className="text-slate-400 mb-8">"Try using your website with just the keyboard. It probably doesn't work."</p>
+                <div className="flex gap-6 max-w-4xl">
+                    <div className="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-6">
+                        <p className="text-red-400 font-bold mb-3">❌ What usually happens</p>
+                        <div className="space-y-3 text-slate-300 text-sm">
+                            <p>Button opens a dropdown or modal.</p>
+                            <p>Tab key moves focus behind the modal — user is lost.</p>
+                            <p>There's no way to close it with Escape.</p>
+                            <p>Focus never returns to the button after closing.</p>
+                            <p>Screen reader doesn't announce that something opened.</p>
+                            <p>Keyboard user is stuck — they have to reload the page.</p>
+                        </div>
+                    </div>
+                    <div className="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-6">
+                        <p className="text-green-400 font-bold mb-3">✅ What should happen — pure HTML + JS</p>
+                        <div className="space-y-3 text-slate-300 text-sm">
+                            <p>Set <span className="font-mono text-xs bg-slate-700 px-1 rounded">tabindex</span> on focusable elements inside the modal.</p>
+                            <p>Use <span className="font-mono text-xs bg-slate-700 px-1 rounded">element.focus()</span> to move focus into the modal on open.</p>
+                            <p>Listen for Escape with <span className="font-mono text-xs bg-slate-700 px-1 rounded">{"addEventListener('keydown', ...)"}</span>.</p>
+                            <p>On close, return focus to the original button with <span className="font-mono text-xs bg-slate-700 px-1 rounded">button.focus()</span>.</p>
+                            <p>Add <span className="font-mono text-xs bg-slate-700 px-1 rounded">aria-expanded="true"</span> to the trigger button.</p>
+                            <p>Use the <span className="font-mono text-xs bg-slate-700 px-1 rounded">inert</span> attribute on background content to lock focus inside.</p>
+                        </div>
+                    </div>
+                </div>
+                <p className="text-slate-500 text-sm mt-6 max-w-4xl">15% of users rely on keyboard navigation. Accessibility (WCAG 2.1 AA) is a legal requirement in the EU. Making a button accessible is its own <span className="text-cyan-400">specialization</span> — it requires understanding assistive technologies.</p>
+            </div>
+        ),
+    },
+    // M1 #5 — Layout Shift (Web Performance / Core Web Vitals)
+    {
+        nav: "module", moduleId: 1,
+        render: () => (
+            <div className="flex flex-col justify-center h-full px-16">
+                <p className="text-cyan-600 text-sm uppercase tracking-widest mb-2">Problem #5</p>
                 <h2 className="text-3xl font-bold text-white mb-3">Layout Shift — the button that moves the page</h2>
-                <p className="text-slate-400 mb-8">You add a button dynamically and suddenly everything "jumps".</p>
+                <p className="text-slate-400 mb-8">"You add a button and suddenly everything 'jumps'."</p>
                 <div className="bg-slate-800 border border-slate-700 rounded-2xl p-8 max-w-3xl">
                     <div className="space-y-5">
                         <div>
-                            <p className="text-white font-semibold mb-2">Button appears after data loads</p>
+                            <p className="text-white font-semibold mb-2">Button appears after content loads</p>
                             <div className="bg-slate-900 rounded-lg p-4 font-mono text-sm">
-                                <p className="text-slate-500">{"// data is loading..."}</p>
-                                <p className="text-blue-400">{"if (data) return <Button>Download</Button>"}</p>
-                                <p className="text-slate-500">{"// → sudden reflow, CLS += 0.15 💥"}</p>
+                                <p className="text-slate-500">{"// element appears after fetch completes"}</p>
+                                <p className="text-blue-400">{"container.appendChild(button)"}</p>
+                                <p className="text-slate-500">{"// → everything below shifts down"}</p>
+                                <p className="text-slate-500">{"// → CLS += 0.15 💥"}</p>
                             </div>
                         </div>
                         <div>
@@ -128,133 +242,16 @@ const slides = [
                         </div>
                         <div className="border-t border-slate-700 pt-4">
                             <p className="text-green-400 font-semibold mb-2">Solutions:</p>
-                            <p className="text-slate-300 text-sm"><span className="text-white">min-width</span> on the button, <span className="text-white">skeleton placeholder</span> before data loads, <span className="text-white">fixed slot in layout</span> even when the button is hidden.</p>
-                            <p className="text-slate-500 text-xs mt-2">CLS (Cumulative Layout Shift) is a Core Web Vital — it affects SEO and Google ranking.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        ),
-    },
-    // M1 - Race conditions
-    {
-        nav: "module", moduleId: 1,
-        render: () => (
-            <div className="flex flex-col justify-center h-full px-16">
-                <p className="text-cyan-600 text-sm uppercase tracking-widest mb-2">Problem #3</p>
-                <h2 className="text-3xl font-bold text-white mb-3">Race conditions & stale closures</h2>
-                <p className="text-slate-400 mb-8">User clicks fast. Your handler lives in the past.</p>
-                <div className="flex gap-6 max-w-4xl">
-                    <div className="flex-1 bg-slate-900 border border-red-900 rounded-xl p-5">
-                        <p className="text-red-400 font-bold text-sm mb-3">❌ The trap</p>
-                        <div className="font-mono text-xs leading-relaxed text-slate-400">
-                            <p className="text-red-400">const [filters, setFilters] = useState(init)</p>
-                            <p className="mt-2">const handleClick = async () =&gt; {"{"}</p>
-                            <p className="ml-3 text-slate-500">{"// filters closed over in closure"}</p>
-                            <p className="ml-3">const res = await fetch(url, {"{"}</p>
-                            <p className="ml-6">body: JSON.stringify(filters)</p>
-                            <p className="ml-3">{"}"})</p>
-                            <p className="ml-3 text-slate-500">{"// user changed filters mid-flight!"}</p>
-                            <p className="ml-3 text-slate-500">{"// we sent stale data"}</p>
-                            <p>{"}"}</p>
-                        </div>
-                    </div>
-                    <div className="flex-1 bg-slate-900 border border-green-900 rounded-xl p-5">
-                        <p className="text-green-400 font-bold text-sm mb-3">✅ Solutions</p>
-                        <div className="space-y-4 text-sm text-slate-300">
-                            <div>
-                                <p className="text-white font-semibold">AbortController</p>
-                                <p className="text-slate-500 text-xs">Cancel previous request when a new one arrives</p>
-                            </div>
-                            <div>
-                                <p className="text-white font-semibold">useRef for current state</p>
-                                <p className="text-slate-500 text-xs">Ref always holds current value, not the closure's</p>
-                            </div>
-                            <div>
-                                <p className="text-white font-semibold">Disable button during request</p>
-                                <p className="text-slate-500 text-xs">Simplest — but not always sufficient</p>
-                            </div>
-                            <div>
-                                <p className="text-white font-semibold">Request ID / nonce</p>
-                                <p className="text-slate-500 text-xs">Ignore response if ID doesn't match current</p>
+                            <div className="space-y-1 text-slate-300 text-sm">
+                                <p><span className="text-white">min-width</span> on the button — reserves space regardless of text.</p>
+                                <p><span className="text-white">Placeholder element</span> — empty space before button loads.</p>
+                                <p><span className="text-white">Fixed slot in layout</span> — CSS grid/flexbox keeps position stable.</p>
+                                <p><span className="text-white">visibility: hidden</span> instead of display: none — keeps the space.</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <p className="text-slate-500 text-sm mt-6 max-w-4xl">This is not an edge case. It's daily life in SPAs. Every button that triggers an async operation is a potential race condition.</p>
-            </div>
-        ),
-    },
-    // M1 - button vs div
-    {
-        nav: "module", moduleId: 1,
-        render: () => (
-            <div className="flex flex-col justify-center h-full px-16">
-                <p className="text-cyan-600 text-sm uppercase tracking-widest mb-2">Problem #4</p>
-                <h2 className="text-3xl font-bold text-white mb-3">{"<button>"} vs {"<div onClick>"} — semantics matter</h2>
-                <p className="text-slate-400 mb-8">Looks the same. Behaves completely differently.</p>
-                <div className="bg-slate-800 border border-slate-700 rounded-2xl p-8 max-w-3xl">
-                    <div className="grid grid-cols-2 gap-6">
-                        <div>
-                            <p className="text-green-400 font-bold mb-3">{"<button>"}</p>
-                            <div className="space-y-2 text-sm text-slate-300">
-                                <p>✅ Keyboard-focusable by default</p>
-                                <p>✅ Enter and Space activate it</p>
-                                <p>✅ Screen reader announces "button"</p>
-                                <p>✅ Supports <span className="font-mono text-xs bg-slate-700 px-1 rounded">disabled</span> natively</p>
-                                <p>✅ Participates in form submission</p>
-                                <p>✅ Implicit role="button"</p>
-                            </div>
-                        </div>
-                        <div>
-                            <p className="text-red-400 font-bold mb-3">{"<div onClick>"}</p>
-                            <div className="space-y-2 text-sm text-slate-300">
-                                <p>❌ Not focusable (needs tabIndex)</p>
-                                <p>❌ Enter/Space don't work (needs onKeyDown)</p>
-                                <p>❌ Screen reader says "group" or nothing</p>
-                                <p>❌ Needs role="button" manually</p>
-                                <p>❌ aria-disabled instead of disabled</p>
-                                <p>❌ cursor: pointer isn't default</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="mt-6 border-t border-slate-700 pt-4">
-                        <p className="text-slate-400 text-sm">And yet — in many projects <span className="text-white font-mono text-xs bg-slate-700 px-1.5 py-0.5 rounded">{"<div onClick>"}</span> is the standard. Because "it's easier to style." The cost? Accessibility, UX, and 15 extra lines to recreate native behavior.</p>
-                    </div>
-                </div>
-            </div>
-        ),
-    },
-    // M1 - z-index & event propagation
-    {
-        nav: "module", moduleId: 1,
-        render: () => (
-            <div className="flex flex-col justify-center h-full px-16">
-                <p className="text-cyan-600 text-sm uppercase tracking-widest mb-2">Problem #5</p>
-                <h2 className="text-3xl font-bold text-white mb-3">Stacking context & event propagation</h2>
-                <p className="text-slate-400 mb-8">The button is there, but invisible. Or you click it — and something else reacts.</p>
-                <div className="flex gap-6 max-w-4xl">
-                    <div className="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-6">
-                        <p className="text-orange-400 font-bold mb-3">🔮 Z-index Wars</p>
-                        <div className="space-y-3 text-sm text-slate-300">
-                            <p>New button in the header. But sticky header has <span className="font-mono text-xs bg-slate-700 px-1 rounded">z-index: 100</span>.</p>
-                            <p>Modal overlay has <span className="font-mono text-xs bg-slate-700 px-1 rounded">z-index: 999</span>.</p>
-                            <p>Dropdown from the button has <span className="font-mono text-xs bg-slate-700 px-1 rounded">z-index: 1000</span>.</p>
-                            <p>But a <span className="font-mono text-xs bg-slate-700 px-1 rounded">transform</span> on the parent creates a new stacking context — and suddenly <span className="text-red-400">z-index: 99999 does nothing</span>.</p>
-                            <p className="text-slate-500 mt-2">Solution? Portal. Or deliberate stacking context management in the design system.</p>
-                        </div>
-                    </div>
-                    <div className="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-6">
-                        <p className="text-purple-400 font-bold mb-3">🫧 Event Bubbling Trap</p>
-                        <div className="space-y-3 text-sm text-slate-300">
-                            <p>"Delete" button inside a clickable table row.</p>
-                            <p>Click "Delete" → both Delete handler <span className="text-white">and</span> RowClick handler fire.</p>
-                            <p><span className="font-mono text-xs bg-slate-700 px-1 rounded">stopPropagation()</span>? Breaks event delegation higher up.</p>
-                            <p>Button inside a link? Button inside a button? Nested interactive elements are an HTML violation.</p>
-                            <p className="text-slate-500 mt-2">A simple button in complex UI is an event propagation minefield.</p>
-                        </div>
-                    </div>
-                </div>
+                <p className="text-slate-500 text-sm mt-4 max-w-3xl">CLS (Cumulative Layout Shift) is a Core Web Vital. Google uses it for search ranking. Understanding browser rendering and <span className="text-cyan-400">layout performance</span> is its own specialization.</p>
             </div>
         ),
     },
@@ -264,7 +261,8 @@ const slides = [
         render: () => (
             <div className="flex flex-col items-center justify-center h-full text-center px-12">
                 <h2 className="text-3xl font-bold text-white mb-6">And that was "just" the UI layer.</h2>
-                <p className="text-xl text-slate-400 mb-10 max-w-2xl leading-relaxed">Focus management, layout shift, race conditions, HTML semantics, stacking context, event propagation...</p>
+                <p className="text-xl text-slate-400 mb-10 max-w-2xl leading-relaxed">HTML semantics, CSS rendering, DOM events,<br/>accessibility, web performance...</p>
+                <p className="text-lg text-slate-300 max-w-2xl leading-relaxed mb-6">Each of these five problems is someone's <span className="text-cyan-400 font-semibold">specialization</span>.<br/>And we haven't even left the browser yet.</p>
                 <p className="text-xl text-slate-300 max-w-2xl leading-relaxed">Now what happens when that button triggers<br/><span className="text-violet-400 font-bold text-2xl">a real business process</span><br/>that cuts through the entire stack?</p>
                 <div className="mt-10 text-slate-600">→</div>
             </div>
@@ -685,7 +683,7 @@ const slides = [
                         <div className="w-3 h-3 rounded-full bg-cyan-500 mt-2 flex-shrink-0" />
                         <div>
                             <p className="text-white font-semibold text-lg">Even a "simple" button is complex</p>
-                            <p className="text-slate-400 text-sm">Focus management, a11y, layout shift, race conditions, semantics, event propagation — pure frontend problems that can surprise you.</p>
+                            <p className="text-slate-400 text-sm">HTML semantics, CSS rendering, DOM events, accessibility, web performance — five specializations hiding behind one button.</p>
                         </div>
                     </div>
                     <div className="flex items-start gap-4">
