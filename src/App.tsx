@@ -534,29 +534,185 @@ const slides = [
             </div>
         ),
     },
-    // M3 - The phenomenon
+    // M3 - The phenomenon (detailed timeline)
     {
         nav: "module", moduleId: 3,
-        render: () => (
-            <div className="flex flex-col justify-center h-full px-16">
-                <h2 className="text-3xl font-bold text-white mb-3">The phenomenon: narrow specialization</h2>
-                <p className="text-[#cecece] mb-8">How the frontend market fragmented.</p>
-                <div className="flex gap-6 max-w-4xl">
-                    <div className="flex-1 bg-[#282828] border border-[#393939] rounded-xl p-6">
-                        <p className="text-[#ffcc05] font-bold mb-4">~2015</p>
-                        <p className="text-[#cecece] text-sm leading-relaxed">"Frontend developer" = one role. You know HTML, CSS, JS, jQuery, maybe Angular. You do everything — from layouts to AJAX calls. Teams are small. Everyone touches every part.</p>
+        render: () => {
+            const eras = [
+                {
+                    period: "~2006–2013", label: "jQuery era & before", color: "#8e8e8e",
+                    bg: "bg-[#232323]", border: "border-[#444]", tc: "text-[#8e8e8e]",
+                    items: [
+                        "jQuery (2006) IS the framework — plugins for everything",
+                        "\"Web developer\" does it all: HTML, CSS, JS, PHP, FTP",
+                        "No build step, no npm, no transpilation",
+                        "Backbone.js & AngularJS (2010) hint at what's coming",
+                    ],
+                },
+                {
+                    period: "2013–2016", label: "Framework revolution", color: "#1767e8",
+                    bg: "bg-[#0e1a2e]", border: "border-[#1a3560]", tc: "text-[#1767e8]",
+                    items: [
+                        "React open-sourced (May 2013) — components change everything",
+                        "Vue.js (Feb 2014), Angular 2 full rewrite (Sept 2016)",
+                        "ES2015 standardized (June 2015), Babel + Webpack arrive",
+                        "\"Frontend developer\" becomes a distinct job title",
+                    ],
+                },
+                {
+                    period: "2016–2019", label: "Ecosystem explosion", color: "#ffcc05",
+                    bg: "bg-[#2a2000]", border: "border-[#453700]", tc: "text-[#ffcc05]",
+                    items: [
+                        "React wins — state management becomes its own specialty",
+                        "TypeScript gains serious adoption (~2018), CSS-in-JS arrives",
+                        "Next.js (Oct 2016), Storybook, testing libraries mature",
+                        "\"JavaScript fatigue\" — tooling complexity overwhelms devs",
+                    ],
+                },
+                {
+                    period: "2020–2022", label: "Pandemic boom", color: "#fd5f2e",
+                    bg: "bg-[#2e1008]", border: "border-[#4a1a0d]", tc: "text-[#fd5f2e]",
+                    items: [
+                        "COVID-19 forces overnight digital transformation",
+                        "Hiring frenzy: salaries spike 30–50%, postings double",
+                        "Hyper-specialization: \"React Dev\", \"Design System Eng\"",
+                        "Microfrontends, monorepos, dedicated platform teams",
+                    ],
+                },
+                {
+                    period: "2023–today", label: "Correction & AI era", color: "#ff7979",
+                    bg: "bg-[#2e1414]", border: "border-[#4a2222]", tc: "text-[#ff7979]",
+                    items: [
+                        "260k+ tech layoffs in 2023 alone (layoffs.fyi)",
+                        "AI tools (Copilot, ChatGPT) shift the productivity bar",
+                        "Frontend job postings drop ~50% from 2021 peak",
+                        "Companies want T-shaped, full-stack-aware engineers",
+                    ],
+                },
+            ];
+
+            return (
+                <div className="flex flex-col justify-center h-full px-10">
+                    <h2 className="text-2xl font-bold text-white mb-1">The phenomenon: narrow specialization</h2>
+                    <p className="text-[#cecece] text-sm mb-5">From one generalist role to dozens of specialists — and why the market is now correcting.</p>
+                    <div className="flex rounded-lg overflow-hidden mb-4">
+                        {eras.map((e, i) => (
+                            <div key={i} className="flex-1 h-1.5" style={{ backgroundColor: e.color, opacity: 0.6 }} />
+                        ))}
                     </div>
-                    <div className="flex-1 bg-[#282828] border border-[#393939] rounded-xl p-6">
-                        <p className="text-[#fd5f2e] font-bold mb-4">~2019–2021</p>
-                        <p className="text-[#cecece] text-sm leading-relaxed">Big Tech is growing. The pandemic accelerates digitalization. Companies hire aggressively. They need "experts" — for React, for design systems, for performance, for a11y, for state management...</p>
-                    </div>
-                    <div className="flex-1 bg-[#282828] border border-[#393939] rounded-xl p-6">
-                        <p className="text-[#ff7979] font-bold mb-4">~2023+</p>
-                        <p className="text-[#cecece] text-sm leading-relaxed">Layoffs. Smaller teams. Tight budgets. Suddenly companies need people who understand the <span className="text-white">whole stack</span>, not just their slice. But many devs only know one framework.</p>
+                    <div className="grid grid-cols-5 gap-3">
+                        {eras.map((e, i) => (
+                            <div key={i} className={`${e.bg} border ${e.border} rounded-xl p-3.5`}>
+                                <p className={`${e.tc} font-bold text-[11px] mb-0.5`}>{e.period}</p>
+                                <p className="text-white font-semibold text-xs mb-2.5">{e.label}</p>
+                                <div className="space-y-1.5">
+                                    {e.items.map((item, j) => (
+                                        <p key={j} className="text-[#8e8e8e] text-[10px] leading-snug">{item}</p>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
-            </div>
-        ),
+            );
+        },
+    },
+    // M3 - The market shift (supply vs demand chart)
+    {
+        nav: "module", moduleId: 3,
+        render: () => {
+            const years = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+            const demand = [18, 22, 30, 38, 48, 58, 65, 72, 88, 100, 82, 40, 35, 38];
+            const supply = [14, 18, 24, 30, 38, 46, 54, 62, 68, 76, 84, 88, 86, 84];
+
+            const cL = 45, cR = 760, cT = 30, cB = 205;
+            const cW = cR - cL, cH = cB - cT;
+            const px = (i: number) => cL + (i / (years.length - 1)) * cW;
+            const py = (v: number) => cB - (v / 100) * cH;
+
+            const toLine = (d: number[]) => d.map((v, i) => `${i === 0 ? "M" : "L"}${px(i).toFixed(1)},${py(v).toFixed(1)}`).join(" ");
+            const toArea = (d: number[]) => toLine(d) + ` L${px(d.length - 1).toFixed(1)},${cB} L${px(0).toFixed(1)},${cB} Z`;
+
+            const zones = [
+                { from: 0, to: 1, color: "#555" },
+                { from: 1, to: 4, color: "#1767e8" },
+                { from: 4, to: 8, color: "#ffcc05" },
+                { from: 8, to: 10, color: "#fd5f2e" },
+                { from: 10, to: 13, color: "#ff7979" },
+            ];
+
+            return (
+                <div className="flex flex-col justify-center h-full px-10">
+                    <h2 className="text-2xl font-bold text-white mb-1">The market shift</h2>
+                    <p className="text-[#8e8e8e] text-sm mb-4">Frontend job postings vs. active frontend developers (relative index, 2021 peak = 100)</p>
+                    <div className="bg-[#1a1a1a] border border-[#282828] rounded-2xl p-6 max-w-5xl">
+                        <svg viewBox="0 0 800 230" className="w-full">
+                            {/* Era background zones */}
+                            {zones.map((z, i) => (
+                                <rect key={i} x={px(z.from)} y={cT} width={px(z.to) - px(z.from)} height={cH} fill={z.color} opacity={0.06} rx={2} />
+                            ))}
+                            {/* Grid lines */}
+                            {[20, 40, 60, 80, 100].map(v => (
+                                <g key={v}>
+                                    <line x1={cL} y1={py(v)} x2={cR} y2={py(v)} stroke="#333" strokeWidth={0.5} />
+                                    <text x={cL - 6} y={py(v) + 3} textAnchor="end" fill="#555" fontSize={9} fontFamily="monospace">{v}</text>
+                                </g>
+                            ))}
+                            {/* Area fills */}
+                            <path d={toArea(demand)} fill="#00d46b" opacity={0.1} />
+                            <path d={toArea(supply)} fill="#ff7979" opacity={0.1} />
+                            {/* Lines */}
+                            <path d={toLine(demand)} fill="none" stroke="#00d46b" strokeWidth={2.5} strokeLinejoin="round" />
+                            <path d={toLine(supply)} fill="none" stroke="#ff7979" strokeWidth={2.5} strokeLinejoin="round" />
+                            {/* Peak annotation */}
+                            <circle cx={px(9)} cy={py(100)} r={4} fill="#00d46b" />
+                            <text x={px(9) - 10} y={py(100) - 8} textAnchor="end" fill="#00d46b" fontSize={9} fontWeight="bold">Peak demand</text>
+                            {/* Crossover line (~late 2022) */}
+                            <line x1={px(9.92)} y1={cT} x2={px(9.92)} y2={cB} stroke="#ff7979" strokeWidth={1} strokeDasharray="4,3" opacity={0.4} />
+                            <text x={px(9.92) + 8} y={cT + 10} textAnchor="start" fill="#ff7979" fontSize={8} opacity={0.8}>supply overtakes demand</text>
+                            {/* Gap labels */}
+                            <text x={(px(5) + px(8)) / 2} y={py(80)} textAnchor="middle" fill="#00d46b" fontSize={9} opacity={0.5}>Demand &gt; Supply</text>
+                            <text x={(px(11) + px(13)) / 2} y={py(62)} textAnchor="middle" fill="#ff7979" fontSize={9} opacity={0.5}>Supply &gt; Demand</text>
+                            {/* X-axis year labels */}
+                            {years.map((yr, i) => (
+                                <text key={i} x={px(i)} y={cB + 16} textAnchor="middle" fill="#555" fontSize={9}>{yr}</text>
+                            ))}
+                        </svg>
+                        {/* Legend */}
+                        <div className="flex items-center gap-6 mt-3 justify-center">
+                            <div className="flex items-center gap-2">
+                                <div className="w-5 h-[2px] bg-[#00d46b] rounded" />
+                                <span className="text-[#8e8e8e] text-xs">Frontend job postings (demand)</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div className="w-5 h-[2px] bg-[#ff7979] rounded" />
+                                <span className="text-[#8e8e8e] text-xs">Active frontend developers (supply)</span>
+                            </div>
+                        </div>
+                    </div>
+                    {/* Key stats */}
+                    <div className="flex gap-8 mt-4 max-w-5xl">
+                        <div className="text-center">
+                            <p className="text-[#00d46b] text-xl font-bold">2x</p>
+                            <p className="text-[#8e8e8e] text-[10px]">job postings growth<br/>2019 &rarr; 2021</p>
+                        </div>
+                        <div className="text-center">
+                            <p className="text-[#ff7979] text-xl font-bold">&minus;60%</p>
+                            <p className="text-[#8e8e8e] text-[10px]">job postings drop<br/>2021 &rarr; 2023</p>
+                        </div>
+                        <div className="text-center">
+                            <p className="text-[#ffcc05] text-xl font-bold">2022</p>
+                            <p className="text-[#8e8e8e] text-[10px]">year supply overtook<br/>demand</p>
+                        </div>
+                        <div className="text-center">
+                            <p className="text-white text-xl font-bold">260k+</p>
+                            <p className="text-[#8e8e8e] text-[10px]">tech layoffs<br/>in 2023</p>
+                        </div>
+                    </div>
+                    <p className="text-[#4b4b4b] text-[10px] mt-3 max-w-5xl">Based on aggregated trends from LinkedIn Economic Graph, Indeed Hiring Lab, Stack Overflow Developer Surveys (2012–2025), and layoffs.fyi.</p>
+                </div>
+            );
+        },
     },
     // M3 - How it happened
     {
@@ -571,7 +727,7 @@ const slides = [
                         { icon: "📦", t: "Framework ecosystem",       d: "React, Angular, Vue, Svelte, Solid, Qwik... Each is a separate universe. Easy to spend 3 years learning one and never see the rest." },
                         { icon: "📋", t: "Keyword-driven hiring",     d: "'3+ years React experience' → devs optimize their CVs for frameworks, not skills." },
                         { icon: "🧱", t: "Microfrontends & ownership",d: "Teams own a fragment of UI. You never see the BFF, services, or database." },
-                        { icon: "💰", t: "Pandemic hiring boom",      d: "2020–2021: hire fast, onboard fast, assign a narrow scope. No time for T-shape development." },
+                        { icon: "💰", t: "Pandemic hiring boom",      d: "2020–2022: hire fast, onboard fast, assign a narrow scope. No time for T-shape development." },
                     ].map((item, i) => (
                         <div key={i} className="flex items-start gap-4 bg-[#282828] border border-[#393939] rounded-xl p-4">
                             <span className="text-2xl flex-shrink-0">{item.icon}</span>
@@ -705,9 +861,6 @@ const slides = [
             <div className="flex flex-col items-center justify-center h-full text-center px-8">
                 <div className="text-7xl mb-8">🔘</div>
                 <h2 className="text-4xl font-bold text-white mb-4">Thank you!</h2>
-                <p className="text-xl text-[#cecece] mb-2">Next time someone says</p>
-                <p className="text-2xl text-white font-bold mb-4">"it's just one button"</p>
-                <p className="text-xl text-[#cecece]">— ask: <span className="text-[#1767e8]">"at which layer?"</span></p>
                 <div className="mt-12 text-[#4b4b4b] text-lg">Q&A</div>
             </div>
         ),
