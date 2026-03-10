@@ -1,44 +1,57 @@
 @import "tailwindcss";
 
 :root {
-  /* InPost design system — always dark theme for the presentation */
+  /* InPost design system — light theme for the presentation */
   --color-accent-1: #00d46b;
-  --color-accent-1-variant: #06753f;
+  --color-accent-1-variant: #d2f8e5;
   --color-accent-2: #1767e8;
   --color-accent-2-brand: #1773f9;
-  --color-accent-2-variant: #144bb9;
-  --color-accent-3: #de78ff;
-  --color-accent-3-variant: #7b1296;
-  --color-accent-4: #ff5ce3;
-  --color-accent-4-variant: #71004c;
+  --color-accent-2-variant: #dff0ff;
+  --color-accent-3: #bc1cf2;
+  --color-accent-3-variant: #eae4ff;
+  --color-accent-4: #e00098;
+  --color-accent-4-variant: #ffe7fc;
   --color-accent-5: #fd5f2e;
-  --color-accent-5-variant: #642301;
+  --color-accent-5-variant: #fee8de;
 
   --color-primary: #ffcc05;
-  --color-primary-variant: #946810;
-  --color-secondary: #fefefe;
+  --color-primary-outline: #efb503;
+  --color-primary-variant: #fff9cf;
+  --color-secondary: #1d1d1d;
 
-  --color-background: #1d1d1d;
-  --color-surface: #282828;
-  --color-surface-variant: #393939;
+  --color-background: #f4f4f4;
+  --color-background-variant: #ffcc05;
+  --color-surface: #fefefe;
+  --color-surface-variant: #f4f4f4;
 
-  --color-on-background: #fefefe;
-  --color-on-surface: #fefefe;
-  --color-on-surface-variant: #cecece;
+  --color-on-background: #1d1d1d;
+  --color-on-surface: #1d1d1d;
+  --color-on-surface-variant: #707070;
+  --color-on-primary: #1d1d1d;
+  --color-on-secondary: #fefefe;
 
   --color-outline: #8e8e8e;
   --color-outline-variant: rgba(142, 142, 142, 0.5);
-  --color-outline-variant-2: rgba(254, 254, 254, 0.1);
+  --color-outline-variant-2: rgba(142, 142, 142, 0.15);
 
-  --color-success: #00d46b;
-  --color-success-variant: #084326;
-  --color-error: #ff7979;
-  --color-error-variant: #581919;
-  --color-on-success: #084326;
-  --color-on-error: #581919;
+  --color-success: #06753f;
+  --color-success-variant: #d2f8e5;
+  --color-error: #bb0020;
+  --color-error-variant: #ffe2e6;
+  --color-on-success: #fefefe;
+  --color-on-error: #fefefe;
+  --color-on-error-variant: #bb0020;
 
-  --color-shade-1: rgba(29, 29, 29, 0.25);
+  --color-inactive: #e1e1e1;
+  --color-inactive-variant: #f4f4f4;
+  --color-on-inactive: #4b4b4b;
+
+  --color-info: #144bb9;
+  --color-info-variant: #dff0ff;
+
+  --color-shade-1: rgba(29, 29, 29, 0.05);
   --color-shade-2: rgba(29, 29, 29, 0.1);
+  --color-shade-3: rgba(29, 29, 29, 0.25);
 }
 
 /* Utility classes using CSS variables */
