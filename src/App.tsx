@@ -22,9 +22,9 @@ import { ButtonVsDivDemo, StackingContextDemo, EventPropagationDemo, FocusTrapDe
 // ─────────────────────────────────────────────────────────────────────────────
 
 const modules = [
-    { id: 1, label: "Button",         color: "bg-[#fd5f2e]",  text: "text-[#1d1d1d]" },
-    { id: 2, label: "Process",        color: "bg-[#1767e8]",  text: "text-white" },
-    { id: 3, label: "Specialization", color: "bg-[#ffcc05]",  text: "text-[#1d1d1d]" },
+    { id: 1, label: "Just a Button",     color: "bg-[#fd5f2e]",  text: "text-[#1d1d1d]" },
+    { id: 2, label: "Download Report",   color: "bg-[#1767e8]",  text: "text-white" },
+    { id: 3, label: "Specialization",    color: "bg-[#ffcc05]",  text: "text-[#1d1d1d]" },
 ];
 
 const layers = [
@@ -78,7 +78,7 @@ const slides = [
         nav: "module", moduleId: 1,
         render: () => (
             <div className="flex flex-col items-center justify-center h-full text-center px-8">
-                <p className="text-[#fd5f2e] text-sm uppercase tracking-widest mb-4">Module 1 — ~7 minutes</p>
+                <p className="text-[#fd5f2e] text-sm uppercase tracking-widest mb-4">Module 1</p>
                 <h2 className="text-4xl font-bold text-white mb-4">"It's just a button"</h2>
                 <p className="text-xl text-[#cecece]">Five problems hiding behind a simple button.<br/>Each one is a different web specialization.</p>
             </div>
@@ -278,7 +278,7 @@ const slides = [
                                 <p><span className="text-white">CSS grid/flex fixed slot</span> — position stays stable</p>
                             </div>
                         </div>
-                        <p className="text-[#8e8e8e] text-xs border-t border-[#393939] pt-3">CLS is a Core Web Vital. Google uses it for search ranking. Browser rendering = its own <span className="text-[#fd5f2e]">specialization</span>.</p>
+                        <p className="text-[#8e8e8e] text-xs border-t border-[#393939] pt-3">CLS is a Core Web Vital. Google uses it for search ranking. Web performance = its own <span className="text-[#fd5f2e]">specialization</span>.</p>
                     </div>
                 </div>
                 {/* Right: demo */}
@@ -307,7 +307,7 @@ const slides = [
         nav: "module", moduleId: 2,
         render: () => (
             <div className="flex flex-col items-center justify-center h-full text-center px-8">
-                <p className="text-[#1767e8] text-sm uppercase tracking-widest mb-4">Module 2 — ~10 minutes</p>
+                <p className="text-[#1767e8] text-sm uppercase tracking-widest mb-4">Module 2</p>
                 <h2 className="text-4xl font-bold text-white mb-4">"Download Report"</h2>
                 <p className="text-xl text-[#cecece]">A new process in an existing system.<br/>Layer by layer — from click to database.</p>
             </div>
@@ -326,7 +326,7 @@ const slides = [
                     </div>
                     <div className="flex items-start gap-4">
                         <div className="w-10 h-10 rounded-full bg-[#1767e8] flex items-center justify-center text-white font-bold text-sm flex-shrink-0">DEV</div>
-                        <p className="text-[#cecece] text-lg">"It depends. Let me walk through this layer by layer."</p>
+                        <p className="text-[#cecece] text-lg">"It depends..."</p>
                     </div>
                 </div>
                 <div className="mt-8 text-[#8e8e8e] text-sm max-w-3xl">A PDF report is a new process — new data flow, new transformations, new output. It has to pass through <span className="text-[#cecece]">5 architectural layers</span>. At each one — decisions.</div>
@@ -348,9 +348,9 @@ const slides = [
                                 <div>
                                     <p className={`${l.color} font-bold text-lg`}>{l.name}</p>
                                     <p className="text-[#8e8e8e] text-sm">
-                                        {i === 0 && "What does the user see? What button states? How long to wait?"}
+                                        {i === 0 && "Where we can fit new button? What button states? How long user can wait?"}
                                         {i === 1 && "Where do parameters come from? How to track loading and errors?"}
-                                        {i === 2 && "What URL does the frontend call? Does the response come immediately?"}
+                                        {i === 2 && "What is the URL for call? Does the response come immediately?"}
                                         {i === 3 && "How to generate the PDF? What if it takes a long time?"}
                                         {i === 4 && "How much data? Will it slow down the app for everyone?"}
                                     </p>
@@ -494,48 +494,6 @@ const slides = [
             </div>
         ),
     },
-    // M2 - Full picture
-    {
-        nav: "module", moduleId: 2,
-        render: () => (
-            <div className="flex flex-col justify-center h-full px-16">
-                <h2 className="text-3xl font-bold text-white mb-6">Full picture: from click to file</h2>
-                <div className="bg-[#282828] border border-[#393939] rounded-2xl p-6 max-w-3xl mx-auto">
-                    {[
-                        { l: "🎨 UI/UX",    a: "User clicks 'Download report'",                    c: "text-[#1767e8]", down: true },
-                        { l: "⚛️ Client",   a: "Gather filters → validate → send request to server", c: "text-[#de78ff]", down: true },
-                        { l: "🔀 BFF",      a: "Check permissions → translate filters → call service", c: "text-[#fd5f2e]", down: true },
-                        { l: "⚙️ Service",  a: "Fetch data → generate PDF → store file",            c: "text-[#ff5ce3]", down: true },
-                        { l: "🗄️ DB",       a: "Run query → return rows for the report",            c: "text-[#ffcc05]", down: false },
-                    ].map((item, i) => (
-                        <div key={`d${i}`}>
-                            <div className="flex items-center gap-4 py-1.5">
-                                <span className={`${item.c} font-semibold text-sm w-24 flex-shrink-0`}>{item.l}</span>
-                                <span className="text-[#cecece] text-sm">{item.a}</span>
-                            </div>
-                            {item.down && <div className="flex"><span className="w-24 flex-shrink-0" /><span className="text-[#4b4b4b] text-xs ml-10">↓</span></div>}
-                        </div>
-                    ))}
-                    <div className="border-t border-dashed border-[#393939] my-3" />
-                    {[
-                        { l: "⚙️ Service",  a: "PDF ready → file URL available",              c: "text-[#ff5ce3]", up: true },
-                        { l: "🔀 BFF",      a: "Return download link to the client",           c: "text-[#fd5f2e]", up: true },
-                        { l: "⚛️ Client",   a: "Receive response → trigger file download",    c: "text-[#de78ff]", up: true },
-                        { l: "🎨 UI/UX",    a: "Show success → file downloaded",              c: "text-[#1767e8]", up: false },
-                    ].map((item, i) => (
-                        <div key={`u${i}`}>
-                            <div className="flex items-center gap-4 py-1.5">
-                                <span className={`${item.c} font-semibold text-sm w-24 flex-shrink-0`}>{item.l}</span>
-                                <span className="text-[#cecece] text-sm">{item.a}</span>
-                            </div>
-                            {item.up && <div className="flex"><span className="w-24 flex-shrink-0" /><span className="text-[#4b4b4b] text-xs ml-10">↑</span></div>}
-                        </div>
-                    ))}
-                </div>
-                <p className="text-center text-[#8e8e8e] text-sm mt-4">9 steps. 5 layers. Dozens of decisions. One button.</p>
-            </div>
-        ),
-    },
     // M2 - Error handling
     {
         nav: "module", moduleId: 2,
@@ -570,7 +528,7 @@ const slides = [
         nav: "module", moduleId: 3,
         render: () => (
             <div className="flex flex-col items-center justify-center h-full text-center px-8">
-                <p className="text-[#ffcc05] text-sm uppercase tracking-widest mb-4">Module 3 — ~8 minutes</p>
+                <p className="text-[#ffcc05] text-sm uppercase tracking-widest mb-4">Module 3</p>
                 <h2 className="text-4xl font-bold text-white mb-4">Narrow Specialization</h2>
                 <p className="text-xl text-[#cecece]">Why "I'm a frontend developer"<br/>stopped being enough — and what to do about it.</p>
             </div>

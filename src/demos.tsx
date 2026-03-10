@@ -495,13 +495,21 @@ export function LayoutShiftDemo() {
     }, []);
 
     useEffect(() => {
-        startBroken();
-        startFixed();
+        // Auto-start animation on mount
+        timerRef.current = setTimeout(() => {
+            setPhase("shifted");
+            setHighlight(true);
+            setTimeout(() => setHighlight(false), 700);
+        }, 1500);
+        fixedTimerRef.current = setTimeout(() => {
+            setFixedPhase("appeared");
+        }, 1500);
+
         return () => {
             if (timerRef.current) clearTimeout(timerRef.current);
             if (fixedTimerRef.current) clearTimeout(fixedTimerRef.current);
         };
-    }, [startBroken, startFixed]);
+    }, []);
 
     const replay = () => {
         startBroken();
@@ -522,7 +530,7 @@ export function LayoutShiftDemo() {
                 <div className="grid grid-cols-2 gap-3">
                     {/* Broken */}
                     <div className="flex flex-col gap-1">
-                        <p className="text-[#ff7979] text-[10px] font-bold">❌ No placeholder</p>
+                        <p className="text-[#ff7979] text-[10px] font-bold">No placeholder</p>
                         <div className="bg-[#282828] rounded-lg p-2 border border-[#393939]" style={{ minHeight: 110 }}>
                             <ContentLines />
                             {phase === "shifted" && (
@@ -537,18 +545,18 @@ export function LayoutShiftDemo() {
                                     <div className="w-1.5 h-1.5 rounded-full bg-[#fd5f2e] animate-bounce" style={{ animationDelay: "0ms" }} />
                                     <div className="w-1.5 h-1.5 rounded-full bg-[#fd5f2e] animate-bounce" style={{ animationDelay: "150ms" }} />
                                     <div className="w-1.5 h-1.5 rounded-full bg-[#fd5f2e] animate-bounce" style={{ animationDelay: "300ms" }} />
-                                    <span className="text-[#4b4b4b] text-[9px] ml-1">loading…</span>
+                                    <span className="text-[#4b4b4b] text-[9px] ml-1">loading...</span>
                                 </div>
                             )}
                         </div>
-                        {highlight && (
+                        {phase === "shifted" && (
                             <p className="text-[#ff7979] text-[9px] font-mono">↑ content jumped! CLS +0.15</p>
                         )}
                     </div>
 
                     {/* Fixed */}
                     <div className="flex flex-col gap-1">
-                        <p className="text-[#00d46b] text-[10px] font-bold">✅ With placeholder</p>
+                        <p className="text-[#00d46b] text-[10px] font-bold">With placeholder</p>
                         <div className="bg-[#282828] rounded-lg p-2 border border-[#393939]" style={{ minHeight: 110 }}>
                             <ContentLines />
                             <div className="relative">
@@ -576,7 +584,7 @@ export function LayoutShiftDemo() {
                     onClick={replay}
                     className="text-[#4b4b4b] hover:text-[#8e8e8e] text-xs transition-colors border border-[#393939] px-3 py-1 rounded"
                 >
-                    ↺ Replay animation
+                    Replay animation
                 </button>
             </div>
         </DemoFrame>
